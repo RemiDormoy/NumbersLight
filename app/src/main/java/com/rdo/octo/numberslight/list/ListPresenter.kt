@@ -25,10 +25,6 @@ class ListPresenter @Inject constructor(
         numbersService.getNumbers().enqueue(this)
     }
 
-    fun onItemSelected(name: String) {
-
-    }
-
 }
 
 interface ListView {

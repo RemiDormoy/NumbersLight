@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,19 +16,20 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.cell_number.view.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
+import android.util.TypedValue
 
-class NumbersListFragment : Fragment(), ListView{
+
+class NumbersListFragment : Fragment(), ListView {
 
     @Inject
     lateinit var presenter: ListPresenter
 
-    private val adapter : NumbersAdapter by lazy {
-        NumbersAdapter()
+    private val adapter: NumbersAdapter by lazy {
+        NumbersAdapter(::onItemClicked)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val inflate = inflater.inflate(R.layout.fragment_list, container, false)
-        return inflate
+        return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
     override fun displayError() {
@@ -47,11 +49,16 @@ class NumbersListFragment : Fragment(), ListView{
     override fun displayList(numbers: List<NumberElement>) {
         adapter.setNumbers(numbers)
     }
+
+    private fun onItemClicked(name: String) {
+        presenter.onItemSelected(name)
+    }
 }
 
-class NumbersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NumbersAdapter(private val onItemClicked: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var numbersList = emptyList<NumberElement>()
+    private var selectedView : View? = null
 
     override fun getItemCount() = numbersList.size
 
@@ -61,6 +68,16 @@ class NumbersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         Picasso.get()
             .load(number.image)
             .into(holder.itemView.pictureImageView)
+        holder.itemView.numberContainer.setOnClickListener {
+            selectedView?.run {
+                val outValue = TypedValue()
+                context.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+                setBackgroundResource(outValue.resourceId)
+            }
+            onItemClicked(number.name)
+            it.setBackgroundColor(ContextCompat.getColor(it.context, android.R.color.holo_green_light))
+            selectedView = it
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

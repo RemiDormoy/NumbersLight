@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.cell_number.view.*
 class NumbersAdapter(private val onItemClicked: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var numbersList = emptyList<NumberElement>()
-    private var selectedView : View? = null
     private var selectedPosition = -1
 
     override fun getItemCount() = numbersList.size
@@ -37,20 +36,14 @@ class NumbersAdapter(private val onItemClicked: (String) -> Unit) : RecyclerView
             )
         }
         holder.itemView.numberContainer.setOnClickListener {
-            selectedView?.run {
-                val outValue = TypedValue()
-                context.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
-                setBackgroundResource(outValue.resourceId)
-            }
-            onItemClicked(number.name)
-            it.setBackgroundColor(
-                ContextCompat.getColor(
-                    it.context,
-                    android.R.color.holo_green_light
-                )
-            )
-            selectedView = it
+            val oldSelectedPosition = selectedPosition
             selectedPosition = position
+            if (oldSelectedPosition != -1) {
+                notifyItemChanged(oldSelectedPosition)
+            }
+            notifyItemChanged(position)
+            selectedPosition = position
+            onItemClicked(number.name)
         }
     }
 

@@ -14,6 +14,7 @@ class NumbersAdapter(private val onItemClicked: (String) -> Unit) : RecyclerView
 
     private var numbersList = emptyList<NumberElement>()
     private var selectedView : View? = null
+    private var selectedPosition = -1
 
     override fun getItemCount() = numbersList.size
 
@@ -23,6 +24,18 @@ class NumbersAdapter(private val onItemClicked: (String) -> Unit) : RecyclerView
         Picasso.get()
             .load(number.image)
             .into(holder.itemView.pictureImageView)
+        if (position != selectedPosition) {
+            val outValue = TypedValue()
+            holder.itemView.context.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+            holder.itemView.numberContainer.setBackgroundResource(outValue.resourceId)
+        } else {
+            holder.itemView.numberContainer.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    android.R.color.holo_green_light
+                )
+            )
+        }
         holder.itemView.numberContainer.setOnClickListener {
             selectedView?.run {
                 val outValue = TypedValue()
@@ -37,6 +50,7 @@ class NumbersAdapter(private val onItemClicked: (String) -> Unit) : RecyclerView
                 )
             )
             selectedView = it
+            selectedPosition = position
         }
     }
 

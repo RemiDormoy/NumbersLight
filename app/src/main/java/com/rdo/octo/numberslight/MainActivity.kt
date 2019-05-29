@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.rdo.octo.numberslight.detail.NumberDetailFragment
 import com.rdo.octo.numberslight.list.NumbersListFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,11 +19,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadDetail(name: String) {
-        hasDetailOpen = true
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.rootViewNumber, NumberDetailFragment(name))
-            .addToBackStack("detail")
-            .commit()
+        detailFragmentContainer?.let {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.detailFragmentContainer, NumberDetailFragment(name))
+                .commit()
+        } ?: {
+            hasDetailOpen = true
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.rootViewNumber, NumberDetailFragment(name))
+                .addToBackStack("detail")
+                .commit()
+        }.invoke()
     }
 
     override fun onBackPressed() {

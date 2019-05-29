@@ -1,5 +1,7 @@
 package com.rdo.octo.numberslight
 
+import com.rdo.octo.numberslight.detail.DetailComponent
+import com.rdo.octo.numberslight.detail.DetailModule
 import com.rdo.octo.numberslight.list.ListComponent
 import com.rdo.octo.numberslight.list.ListModule
 import dagger.Component
@@ -12,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 interface MainComponent {
 
     fun plus(module: ListModule) : ListComponent
+    fun plus(module: DetailModule) : DetailComponent
 }
 
 @Module

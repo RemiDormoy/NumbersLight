@@ -14,10 +14,12 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail.*
 import javax.inject.Inject
 
-class NumberDetailFragment(private val name: String) : Fragment(), DetailView {
+class NumberDetailFragment : Fragment(), DetailView {
 
     @Inject
     lateinit var presenter: DetailPresenter
+
+    var name: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_detail, container, false)
@@ -28,7 +30,9 @@ class NumberDetailFragment(private val name: String) : Fragment(), DetailView {
         DaggerMainComponent.create()
             .plus(DetailModule(this))
             .inject(this)
-        presenter.loadDetail(name)
+        name?.let {
+            presenter.loadDetail(it)
+        }
     }
 
     override fun displayError() {

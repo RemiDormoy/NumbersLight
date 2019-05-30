@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Numbers Light</string>
+    <string name="retry">Retry</string>
 </resources>

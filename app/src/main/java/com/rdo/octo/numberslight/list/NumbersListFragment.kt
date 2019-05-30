@@ -3,6 +3,8 @@ package com.rdo.octo.numberslight.list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -30,6 +32,8 @@ class NumbersListFragment : Fragment(), ListView {
     }
 
     override fun displayError() {
+        numbersRecyclerView.visibility = GONE
+        retryButton.visibility = VISIBLE
         Toast.makeText(requireContext(), "Une erreur est survenue", Toast.LENGTH_SHORT).show()
     }
 
@@ -43,9 +47,14 @@ class NumbersListFragment : Fragment(), ListView {
         numbersRecyclerView.layoutManager = linearLayoutManager
         numbersRecyclerView.adapter = adapter
         presenter.displayNumbers()
+        retryButton.setOnClickListener {
+            presenter.displayNumbers()
+        }
     }
 
     override fun displayList(numbers: List<NumberElement>) {
+        numbersRecyclerView.visibility = VISIBLE
+        retryButton.visibility = GONE
         adapter.setNumbers(numbers)
     }
 

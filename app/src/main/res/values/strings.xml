@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Numbers Light</string>
     <string name="retry">Retry</string>
+    <string name="error_ocured">Une erreur est survenue</string>
 </resources>

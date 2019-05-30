@@ -32,6 +32,10 @@ class NumberDetailFragment : Fragment(), DetailView {
         DaggerMainComponent.create()
             .plus(DetailModule(this))
             .inject(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
         name?.let { name ->
             presenter.loadDetail(name)
             retryButton.setOnClickListener { presenter.loadDetail(name) }
@@ -40,7 +44,7 @@ class NumberDetailFragment : Fragment(), DetailView {
 
     override fun displayError() {
         retryButton.visibility = VISIBLE
-        Toast.makeText(requireContext(), "Une erreur est survenue", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(R.string.error_ocured), Toast.LENGTH_SHORT).show()
     }
 
     override fun displayDetail(numberDetail: NumberDetail) {

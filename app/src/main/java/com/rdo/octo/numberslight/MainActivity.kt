@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction()
-            .add(R.id.rootViewNumber, NumbersListFragment())
+            .replace(R.id.rootViewNumber, NumbersListFragment())
             .commit()
         savedInstanceState?.let {
             it.getString(BUNDLE_NAME)?.let { name ->

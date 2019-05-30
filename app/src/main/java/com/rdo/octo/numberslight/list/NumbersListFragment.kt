@@ -53,8 +53,10 @@ class NumbersListFragment : Fragment(), ListView {
     }
 
     override fun displayList(numbers: List<NumberElement>) {
-        numbersRecyclerView.visibility = VISIBLE
-        retryButton.visibility = GONE
+        numbersRecyclerView?.let {
+            numbersRecyclerView.visibility = VISIBLE
+            retryButton.visibility = GONE
+        }
         adapter.setNumbers(numbers)
     }
 

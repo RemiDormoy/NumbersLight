@@ -32,6 +32,8 @@ android {
         }
         production {
             dimension "version"
+            applicationIdSuffix ""
+            versionNameSuffix ""
             buildConfigField "boolean", "LOG_ENABLED", "false"
         }
     }
